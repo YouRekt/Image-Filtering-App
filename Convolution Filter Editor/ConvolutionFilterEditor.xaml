@@ -1,0 +1,114 @@
+﻿<Window x:Class="Image_Filtering_App.Convolution_Filter_Editor.ConvolutionFilterEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Image_Filtering_App.Convolution_Filter_Editor"
+        xmlns:converters="clr-namespace:Image_Filtering_App.Converters"
+        mc:Ignorable="d"
+        Title="Convolution Filter Editor" Height="600" Width="800">
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolToBackgroundConverter x:Key="BoolToBackgroundConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem x:Name="Reset" Header="Reset" Click="Reset_Click" />
+            <MenuItem Header="Filters" ItemsSource="{Binding AvailableFilters}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{Binding}"/>
+                        <EventSetter Event="Click" Handler="LoadFilterMenuItem_Click"/>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
+        </Menu>
+        <Grid Margin="10" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Kernel Size -->
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Kernel Name:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Column="0"/>
+                <TextBox x:Name="KernelName" Text="{Binding SelectedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Grid.Column="1"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Kernel Size:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Column="0"/>
+                <ComboBox x:Name="KernelWidthCombo" Width="60" ItemsSource="{Binding KernelSizes}" SelectedItem="{Binding SelectedKernelWidth, Mode=TwoWay}" Grid.Column="1"/>
+                <TextBlock Text="x" Margin="5,0,5,0" VerticalAlignment="Center" Grid.Column="2"/>
+                <ComboBox x:Name="KernelHeightCombo" Width="60" ItemsSource="{Binding KernelSizes}" SelectedItem="{Binding SelectedKernelHeight, Mode=TwoWay}" Grid.Column="3"/>
+            </Grid>
+
+            <!-- Kernel Grid -->
+            <ItemsControl Grid.Row="2" x:Name="KernelGrid" Margin="0,10,0,0" ItemsSource="{Binding KernelGrid}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="{Binding SelectedKernelWidth, UpdateSourceTrigger=PropertyChanged}" Rows="{Binding SelectedKernelHeight, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Background="{Binding IsAnchor,Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToBackgroundConverter}}" Width="80" Height="30" Margin="2"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Divisor, Offset, Anchor -->
+            <Grid Grid.Row="3" Margin="0,10,0,0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Divisor Input -->
+                <TextBlock Text="Divisor:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Text="{Binding CustomFilter.Divisor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Visibility="{Binding IsDivisorEnabled, Converter={StaticResource BoolToVisibilityConverter}}" Grid.Row="0" Grid.Column="1"/>
+                <!-- Auto Divisor Checkbox -->
+                <CheckBox Content="Auto Calculate" IsChecked="{Binding AutoCalculateDivisor, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Row="0" Grid.Column="3"/>
+                <!-- Offset Input -->
+                <TextBlock Text="Offset:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Text="{Binding CustomFilter.Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Grid.Row="1" Grid.Column="1"/>
+                <!-- Anchor Input -->
+                <TextBlock Text="Anchor X:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="2" Grid.Column="0"/>
+                <TextBox x:Name="AnchorX" Text="{Binding CustomFilter.AnchorX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Grid.Row="2" Grid.Column="1" TextChanged="OnAnchorChanged"/>
+                <TextBlock  Text="Anchor Y:" VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="3" Grid.Column="0"/>
+                <TextBox x:Name="AnchorY" Text="{Binding CustomFilter.AnchorY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Grid.Row="3" Grid.Column="1" TextChanged="OnAnchorChanged"/>
+            </Grid>
+            <!-- Buttons -->
+            <Grid Grid.Row="4" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Save Filter" Click="SaveFilter_Click" Margin="0,0,10,0" Grid.Column="0" HorizontalAlignment="Center"/>
+                <Button Content="Cancel" Click="Cancel_Click" Margin="0,0,10,0" Grid.Column="1" HorizontalAlignment="Center"/>
+                <Button Content="Apply" Click="Apply_Click" Grid.Column="2" HorizontalAlignment="Center"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
