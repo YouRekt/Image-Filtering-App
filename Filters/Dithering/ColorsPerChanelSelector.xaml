@@ -1,0 +1,24 @@
+﻿<Window x:Class="Image_Filtering_App.Filters.Dithering.ColorsPerChanelSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Image_Filtering_App.Filters.Dithering"
+        mc:Ignorable="d"
+        Title="Select the Number of colors" Height="175" Width="350">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Colors per chanel:" Grid.Row="0" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="ColorsPerChanel" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding k, Mode=TwoWay}" Margin="0,10,0,10"/>
+        <Button x:Name="Apply" Content="Apply" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Click="Apply_Click" VerticalAlignment="Bottom"/>
+        <Button x:Name="Cancel" Content="Cancel" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Click="Cancel_Click" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>
