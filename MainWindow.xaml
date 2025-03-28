@@ -6,13 +6,18 @@
         xmlns:local="clr-namespace:Image_Filtering_App"
         mc:Ignorable="d"
         Title="Image Filtering App" Height="600" Width="800">
-    
+    <Window.CommandBindings>
+        <CommandBinding x:Name="Undo" Command="Undo" CanExecute="CanExecute" Executed="Undo_Executed" />
+        <CommandBinding x:Name="Open" Command="Open" CanExecute="CanExecute" Executed="Open_Executed" />
+        <CommandBinding x:Name="SaveImage" Command="Save" CanExecute="CanExecute" Executed="SaveImage_Executed" />
+    </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem x:Name="LoadImage" Header="Load Image" Click="LoadImage_Click"/>
-                <MenuItem x:Name="Save" Header="Save" Click="Save_Click"/>
-                <MenuItem x:Name="Reset" Header="Reset" Click="Reset_Click"/>
+                <MenuItem x:Name="LoadImage" Header="Load Image" Command="Open"/>
+                <MenuItem x:Name="Save" Header="Save" Command="Save"/>
+                <MenuItem x:Name="Reset" Header="Reset" Command="Undo"/>
+                <MenuItem x:Name="ToGrayscale" Header="Convert to Grayscale" Click="ToGrayscale_Click"/>
             </MenuItem>
             <MenuItem x:Name="Functional_Filters" Header="Functional Filters"/>
             <MenuItem x:Name="Convolution_Filters" Header="Convolution Filters">
@@ -21,6 +26,16 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem x:Name="Morphological_Filters" Header="Morphological Filters"/>
+            <MenuItem Header="Dithering">
+                <MenuItem x:Name="ColorsPerChanel" Header="Colors per chanel" Click="ColorsPerChanel_Click" />
+                <Separator/>
+                <MenuItem x:Name="AvgDithering" Header="Average Dithering" Click="AvgDithering_Click"/>
+            </MenuItem>
+            <MenuItem Header="Color Quantization">
+                <MenuItem x:Name="MaxColors" Header="Maximum Colors" Click="MaxColors_Click" />
+                <Separator/>
+                <MenuItem x:Name="OctreeQuantization" Header="Octree Quantization" Click="OctreeQuantization_Click"/>
+            </MenuItem>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
