@@ -30,6 +30,7 @@
                 <MenuItem x:Name="ColorsPerChanel" Header="Colors per chanel" Click="ColorsPerChanel_Click" />
                 <Separator/>
                 <MenuItem x:Name="AvgDithering" Header="Average Dithering" Click="AvgDithering_Click"/>
+                <MenuItem x:Name="AvgYCbCrDithering" Header="Average YCbCr Dithering" Click="AvgYCbCrDithering_Click"/>
             </MenuItem>
             <MenuItem Header="Color Quantization">
                 <MenuItem x:Name="MaxColors" Header="Maximum Colors" Click="MaxColors_Click" />

@@ -450,4 +450,25 @@ public partial class MainWindow : Window
     {
         Save_Click(sender, e);
     }
+
+    private void AvgYCbCrDithering_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (filteredImage != null)
+            {
+                filteredImage = Dithering.YCbCrAverageDithering(filteredImage, colorsPerChanel);
+
+                FilteredImage.Source = filteredImage;
+            }
+            else
+            {
+                MessageBox.Show("No image loaded. Please load an image first.");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error during dithering: {ex.Message}");
+        }
+    }
 }
