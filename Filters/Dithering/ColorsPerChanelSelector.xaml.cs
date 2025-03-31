@@ -35,7 +35,7 @@ namespace Image_Filtering_App.Filters.Dithering
 
         private void Apply_Click(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(ColorsPerChanel.Text, out int colors) && colors >= 2)
+            if (int.TryParse(ColorsPerChanel.Text, out int colors) && colors >= 2 && colors <= 255)
             {
                 k = colors;
                 DialogResult = true;
@@ -43,7 +43,7 @@ namespace Image_Filtering_App.Filters.Dithering
             }
             else
             {
-                MessageBox.Show("Please enter a valid integer value (>=2).",
+                MessageBox.Show("Please enter a valid integer value (2 - 255).",
                                 "Invalid Input",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
